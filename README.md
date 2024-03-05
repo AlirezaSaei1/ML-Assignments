@@ -1,2 +1,2 @@
 # ML-Assignments
-This repo is for assignments of Fundamentals of Machine Learning Course!
+Repository for Fundamentals of Machine Learning Course (Fall 2023) by Peyman Adibi.
