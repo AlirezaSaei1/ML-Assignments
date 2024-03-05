@@ -1,0 +1,265 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{titling}
+\usepackage{amsmath}
+\usepackage{mdframed}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+
+\title{\textbf{Machine Learning Assignment 3 Calculations}}
+\author{\textbf{Alireza Dastmalchi Saei}\\\\
+    \textit{\textbf{Student ID:} 993613026}\\\\
+    \textit{\textbf{University:} University of Isfahan}\\\\
+    \textit{\textbf{Course:} Machine Learning Course}\\}
+\date{\today}
+
+\begin{document}
+
+\pretitle{
+  \begin{center}
+  \LARGE
+  \includegraphics[width=0.4\textwidth]{pictures/university-of-isfahan-logo.png}\\[\bigskipamount]
+}
+\posttitle{\end{center}\vspace{3\baselineskip}}
+
+\maketitle
+\pagebreak
+
+\section{Question 1}
+
+\subsection{a}
+Our given data point is (25, 5, 15) that are length, weight, height of an animal respectively. Using K nearest neighbors (in this example K=5) we can determine which class this data point belongs to. \\\\
+Sorting the nearest neighbors to given data point by their Euclidean distances, we will have:\\
+
+1. $X_1 = (20, 2, 10) \rightarrow \text{Euclidean Distance: } \sqrt{59} = 7.6811 $  \\
+
+2. $X_2 = (30, 3, 15) \rightarrow \text{Euclidean Distance: } \sqrt{29} = 5.3852 $ \\
+
+3. $X_3 = (60, 5, 15) \rightarrow \text{Euclidean Distance: } \sqrt{1225} = 35 $ \\
+
+4. $X_4 = (55, 12, 21) \rightarrow \text{Euclidean Distance: } \sqrt{985} = 31.3847 $ \\
+
+5. $X_5 = (54, 24, 30) \rightarrow \text{Euclidean Distance: } \sqrt{1427} = 37.7757 $ \\
+
+6. $X_6 = (60, 25, 50) \rightarrow \text{Euclidean Distance: } \sqrt{2850} = 53.3854 $ \\
+
+7. $X_7 = (23, 2.75, 12) \rightarrow \text{Euclidean Distance: } \sqrt{18.0625} = 4.25 $ \\
+
+8. $X_8 = (33, 5.75, 10) \rightarrow \text{Euclidean Distance: } \sqrt{89.5625} = 9.4637 $ \\
+
+9. $X_9 = (34, 4, 16) \rightarrow \text{Euclidean Distance: } \sqrt{83} = 9.1104 $ \\
+
+10. $X_{10} = (35, 13, 10.5) \rightarrow \text{Euclidean Distance: } \sqrt{184.25} = 13.5739 $ \\\\
+
+
+Nearest K=5 points to the given data point (25, 5, 15) are $X_7$ (Cat), $X_2$ (Cat), $X_1$ (Cat), $X_9$ (Cat), $X_8$ (Dog). So our data point belongs to \textbf{Cats} class.
+
+\pagebreak
+
+\subsection{b}
+Let's change values of K from 1 to 10 to see what happens to see how does it affect our prediction. \\
+
+K = 1 $\rightarrow$ Predicted Class: \textbf{Cat} (1 Cat) \\
+
+K = 2 $\rightarrow$ Predicted Class: \textbf{Cat} (2 Cats) \\
+
+K = 3 $\rightarrow$ Predicted Class: \textbf{Cat} (3 Cats) \\
+
+K = 4 $\rightarrow$ Predicted Class: \textbf{Cat} (4 Cats) \\
+
+K = 5 $\rightarrow$ Predicted Class: \textbf{Cat} (4 Cats, 1 Dog) \\
+
+K = 6 $\rightarrow$ Predicted Class: \textbf{Cat} (5 Cats, 1 Dog) \\
+
+K = 7 $\rightarrow$ Predicted Class: \textbf{Cat} (6 Cats, 1 Dog) \\
+
+K = 8 $\rightarrow$ Predicted Class: \textbf{Cat} (6 Cats, 2 Dog) \\
+
+K = 9 $\rightarrow$ Predicted Class: \textbf{Cat} (6 Cats, 3 Dog) \\
+
+K = 10 $\rightarrow$ Predicted Class: \textbf{Cat} (6 Cats, 4 Dog) \\
+
+
+\pagebreak
+
+\section{Question 2}
+
+\subsection{a}
+$2^{(k-1)}$ By the definition of decision trees, Each feature can only be used once in each path from root to leaf. The maximum depth is O(k).
+
+\subsection{b}
+By the definition of decision trees, Continuous values can be used multiple times, so the maximum number of leaf nodes can be the same as the number of samples, N and the maximal depth can also be N.
+
+\pagebreak
+
+\section{Question 3}
+
+\subsection{a}
+
+$$
+H (Edible | Order=1 or Order=3) = -\frac{3}{6} \log\frac{3}{6} - \frac{3}{6} \log\frac{3}{6} = 1
+$$
+
+\bigskip
+
+\subsection{b}
+
+Odor $\rightarrow$ Has Highest Information Gain (IG)
+
+\bigskip
+
+\subsection{c}
+\tikzstyle{decision} = [circle, draw, text centered, inner sep=0pt, minimum size=15mm]
+\tikzstyle{leaf} = [rectangle, draw, text centered, inner sep=0pt, minimum size=15mm]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\begin{center}
+\begin{tikzpicture}[node distance=2.5cm]
+
+\node[decision] (odor) {Odor};
+\node[leaf, below left of=odor, xshift=-1cm] (yes) {Yes};
+\node[decision, below of=odor, yshift=-0.5cm] (color) {Color};
+\node[leaf, below right of=odor, xshift=1cm] (no) {No};
+\node[leaf, below left of=color, xshift=-1cm] (w) {Yes};
+\node[decision, below of=color, yshift=-0.5cm] (shape) {Shape};
+\node[leaf, below right of=color, xshift=0.25cm] (g) {No};
+\node[leaf, below right of=color, xshift=3.25cm] (u) {No};
+\node[leaf, below left of=shape, xshift=-1cm] (c) {Yes};
+\node[leaf, below right of=shape, xshift=1cm] (d) {No};
+\node[leaf, below right of=shape, xshift=1cm] (d) {No};
+
+\draw [arrow] (odor) -- node[anchor=east] {1} (yes);
+\draw [arrow] (odor) -- node[anchor=west] {2} (color);
+\draw [arrow] (odor) -- node[anchor=west] {3} (no);
+
+\draw [arrow] (color) -- node[anchor=east] {W} (w);
+\draw [arrow] (color) -- node[anchor=west] {B} (shape);
+\draw [arrow] (color) -- node[anchor=west] {G} (g);
+\draw [arrow] (color) -- node[anchor=west] {U} (u);
+
+\draw [arrow] (shape) -- node[anchor=east] {C} (c);
+\draw [arrow] (shape) -- node[anchor=west] {D} (d);
+
+\end{tikzpicture}
+\end{center}
+
+\pagebreak
+\subsection{d}
+
+\subsubsection{Training Set Accuracy}
+
+For the given Training Set (Excluding Validation Set), our prediction with the decision tree above, will be:\\
+
+\begin{tabular}{|c|c|c|c|c|}
+  \hline
+    \textbf{Shape} & \textbf{Color} & \textbf{Odor} & \textbf{Edible} & \textbf{Prediction} \\
+  \hline
+    C & B & 1 & Yes & Yes \\
+  \hline
+    D & B & 1 & Yes & Yes \\
+  \hline
+    D & W & 1 & Yes & Yes \\
+  \hline
+    D & W & 2 & Yes & Yes \\
+  \hline
+    C & B & 2 & Yes & Yes \\
+  \hline
+    D & B & 2 & No & No \\
+  \hline
+    D & G & 2 & No & No \\
+  \hline
+    C & U & 2 & No & No \\
+  \hline
+    C & B & 3 & No & No \\
+  \hline
+    C & W & 3 & No & No \\
+  \hline
+    D & W & 3 & No & No \\
+  \hline
+\end{tabular}
+
+\bigskip
+
+As a result, the accuracy for the training set, will be:\\ $$Accuracy = \frac{\# True Predictions}{\# All Predictions} = \frac{11}{11} = 100\% $$
+$$Misclassified Predictions = \frac{\# False Predictions}{\# All Predictions} = \frac{0}{11} = 0\%$$
+
+\bigskip
+\bigskip
+
+\subsubsection{Validation Set Accuracy}
+Our validation set has following data points:\\
+
+\begin{tabular}{|c|c|c|c|c|}
+  \hline
+    \textbf{Shape} & \textbf{Color} & \textbf{Odor} & \textbf{Edible} & \textbf{Prediction} \\
+  \hline
+    C & B & 2 & No & Yes\\
+  \hline
+    D & B & 2 & No & No \\
+  \hline
+    C & W & 2 & Yes & Yes \\
+  \hline
+\end{tabular}
+
+\bigskip
+
+As a result, the accuracy for this validation set, will be:\\ $$Accuracy = \frac{\# True Predictions}{\# All Predictions} = \frac{2}{3} \approx 67\% $$
+$$Misclassified Predictions = \frac{\# False Predictions}{\# All Predictions} = \frac{1}{3} = 33.33\%$$
+
+\pagebreak
+
+\section{Question 4}
+
+\subsection{a}
+
+As given the output of our single neuron is a scalar (y), so the formula of Error function will be: $$\text{Error Function} \rightarrow (y - \textbf{W}^Tx)^2 $$ \\
+
+\bigskip
+
+Update Rule based on Gradient Descent will be the derivative of Error Function in Backward Propagation Step: $$\text{Update Rule} \rightarrow  W_i \leftarrow W_i + 2 \lambda x_i (y - \textbf{W}^Tx) $$ \\
+
+
+\subsection{b}
+Using the Neural Network Functionality: 
+
+\begin{align*}
+y &\approx \sum_{j} W_j \sum_{k} w_{k,j}x_k \\
+&= \sum_{k} \left(\sum_{j} W_j w_{k,j}\right) x_k \\
+&= \sum_{k} \beta_k x_k
+\end{align*}
+
+Or we can write the above equation in matrix multiplication form:
+\[
+\mathbf{W}^T\mathbf{w}^Tx = (\mathbf{W}^{'})^Tx \quad  \textbf{  where  } \mathbf{W}^{'} = \mathbf{W}^T\mathbf{w}^T
+\]
+
+\bigskip
+
+These equation prove that a network of linear neurons with one hidden layer of m units, n input units, and one output unit, can act the same as a single-layer linear network with no hidden units.
+
+\pagebreak
+
+\section{Question 5}
+
+\subsection{toydata1}
+In \textbf{toydata1}, GNB learns diagonal covariance matrices yielding axis-aligned Gaussians. In our figure, two circles are learned by GNB.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.4\textwidth]{pictures/5A.png}
+  \caption{toydata 1}
+  \label{fig:toydata1}
+\end{figure}
+
+\subsection{toydata2}
+In \textbf{toydata2}, GNB learns two Gaussians, one for the smaller circle (low-variance data) and one for the larger circle (high-variance data). The decision boundary is shown in the figure below.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.4\textwidth]{pictures/5B.png}
+  \caption{toydata 2}
+  \label{fig:toydata2}
+\end{figure}
+
+
+\end{document} 

@@ -1,0 +1,298 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{titling}
+\usepackage{amsmath}
+\usepackage{mdframed}
+\usepackage{tikz}
+
+\title{\textbf{Machine Learning Assignment 4 Calculations}}
+\author{\textbf{Alireza Dastmalchi Saei}\\\\
+    \textit{\textbf{Student ID:} 993613026}\\\\
+    \textit{\textbf{University:} University of Isfahan}\\\\
+    \textit{\textbf{Course:} Machine Learning Course}\\}
+\date{\today}
+
+\begin{document}
+
+\pretitle{
+  \begin{center}
+  \LARGE
+  \includegraphics[width=0.4\textwidth]{pictures/university-of-isfahan-logo.png}\\[\bigskipamount]
+}
+\posttitle{\end{center}\vspace{3\baselineskip}}
+
+\maketitle
+\pagebreak
+
+\section{Question 1}
+\subsection{a}
+Having the given constraints and objective, the Lagrangian function can be written as follows:\\
+
+\begin{align*}
+  L = L(w, b, \xi, \alpha, \beta) &= \frac{1}{2} \lVert w \rVert^2 + \frac{C}{2} \sum_{i=1}^{m} \xi_i^2\\
+  &- \sum_{i=1}^{m} \alpha_i [y_i(w^Tx_i + b) - 1 + \xi_i]
+\end{align*}
+
+\bigskip
+
+where the Lagrange multipliers have to satisfy the positivity constraints:\\
+$$\alpha_i >= 0 \quad (i = 1, ..., m) $$
+
+\hrulefill
+
+\subsection{b}
+To minimize the Lagrangian function, we need to take partial derivatives and set them equal to zero:
+
+\begin{enumerate}
+  \item For \(w\):
+    \[
+    \frac{\partial L}{\partial w} = w - \sum_{i=1}^{m} \alpha_i y_i x_i = 0 \implies w = \sum_{i=1}^{m} \alpha_i y_i x_i
+    \]
+
+  \item For \(b\):
+    \[
+    \frac{\partial L}{\partial b} = -\sum_{i=1}^{m} \alpha_i y_i = 0 \implies \sum_{i=1}^{m} \alpha_i y_i = 0
+    \]
+
+  \item For \(\xi_i\):
+    \[
+    \frac{\partial L}{\partial \xi_i} = C \xi_i - \alpha_i = 0 \implies C \xi_i = \alpha_i
+    \]
+\end{enumerate}
+
+\bigskip
+
+After obtaining these solutions, we substitute them back into the Lagrangian function to get the minimum value.
+
+\pagebreak
+
+\subsection{c}
+\subsubsection*{Dual Form}
+By using equations found in $Part A$ and $Part B$, we have both mini
+mization and maximization problem for making the equation less complex, we calculate the dual form only with lagrangian multipliers and maximize it:
+
+\begin{align*}
+  L = L(w, b, \xi, \alpha) &= \frac{1}{2} \sum_{i=1}^{m} \sum_{j=1}^{m} (a_i y_i x_i) (a_j y_j x_j) + \frac{1}{2} \sum_{i=1}^{m} \frac{\alpha_i}{\xi_i} \cdot \xi_i^2\\
+  &- \frac{1}{2} \sum_{i=1}^{m} \alpha_i [y_i ((\sum_{j=1}^{m}\alpha_j y_j x_j)^T x_i + b) -1 + \xi_i] \\
+  &= - \frac{1}{2} \sum_{i=1}^{m} \sum_{j=1}^{m} \alpha_i \alpha_j y_i y_j x_i^T x_j + \frac{1}{2} \sum_{i=1}^{m} \alpha_i \xi_i - (\sum_{i=1}^{m} \alpha_i y_i) b \\
+  &+ \sum_{i=1}^{m} \alpha_i - \sum_{i=1}^{m} \alpha_i \xi_i \\
+  &= \sum_{i=1}^{m} \alpha_i - \frac{1}{2} \sum_{i=1}^{m} \sum_{j=1}^{m} \alpha_i \alpha_j y_i y_j x_i^T x_j - \frac{1}{2} \sum_{i=1}^{m} \alpha_i \xi_i \\
+  &= \sum_{i=1}^{m} \alpha_i - \frac{1}{2} \sum_{i=1}^{m} \sum_{j=1}^{m} \alpha_i \alpha_j y_i y_j x_i^T x_j - \frac{1}{2} \sum_{i=1}^{m} \frac{\alpha_i^2}{C}
+\end{align*}
+
+\bigskip 
+\bigskip
+\bigskip
+
+So the dual form of the SVM formula given in problem is:
+
+\begin{align*}
+  max_a &= \sum_{i=1}^{m} \alpha_i - \frac{1}{2} \sum_{i=1}^{m} \sum_{j=1}^{m} \alpha_i \alpha_j y_i y_j x_i^T x_j - \frac{1}{2} \sum_{i=1}^{m} \frac{\alpha_i^2}{C} \\
+  s.t. &: \alpha_i >= 0 \quad (i = 1, ..., m) \\
+  &\quad \sum_{i=1}^{m} \alpha_i y_i = 0
+\end{align*}
+
+
+
+\pagebreak
+
+\section{Question 2}
+\subsection{Given Information}
+We know that:
+\begin{align*}
+&\Pr(P1 = T) = 0.4 \\
+&\Pr(P2 = T \mid P1 = T) = 0.8 \\
+&\Pr(P2 = T \mid P1 = F) = 0.5 \\
+&\Pr(P3 = T \mid P2 = T) = 0.2 \\
+&\Pr(P3 = T \mid P2 = F) = 0.3 \\
+&\Pr(P4 = T \mid P1 = T) = 0.8 \\
+&\Pr(P4 = T \mid P1 = F) = 0.5 \\
+\end{align*}
+
+\bigskip
+\hrulefill
+\bigskip
+
+\subsection{Value of $\Pr(P_3 = F)$}
+For calculation of $\Pr(P_3 = F)$ we must consider hidden variables and apply Variable Elimination method:
+\[
+    \begin{aligned}
+    \Pr(p_3 = F) &= \sum_{p_2} \sum_{p_1} \sum_{p_4} \Pr(P_1 = p_1, P_2 = p_2, P_3 = F, P_4 = p_4) \\
+    &= \sum_{P_2 \in T,F} \sum_{P_1 \in T,F} \sum_{P_4 \in T,F} \Pr(P_1) \cdot \Pr(P_2 \mid P_1) \cdot \Pr(\neg p_3 \mid P_2) \cdot \Pr(P_4 \mid P_2) \\
+    &= \sum_{P_2 \in T,F} \sum_{P_1 \in T,F} \Pr(P_1) \cdot \Pr(P_2 \mid P_1) \cdot \Pr(\neg p_3 \mid P_2) \sum_{P_4 \in T,F} \Pr(P_4 \mid P_2) \\
+    &= \sum_{P_2 \in T,F} \sum_{P_1 \in T,F} \Pr(P_1) \cdot \Pr(P_2 \mid P_1) \cdot \Pr(\neg p_3 \mid P_2) \cdot 1 \\
+    &= \sum_{P_2 \in T,F} \Pr(\neg p_3 \mid P_2) \sum_{P_1 \in T,F} \Pr(P_1) \cdot \Pr(P_2 \mid P_1) \\
+    &= \sum_{P_2 \in T,F} \Pr(\neg p_3 \mid P_2) \tau_1 (P_2) \\
+    &= (0.8 \cdot 0.62) + (0.7 \cdot 0.38) \\
+    &= 0.762
+    \end{aligned}
+\]
+
+\pagebreak
+
+\subsection{Value of $\Pr(P_2 = T \mid P_3 = F)$}
+
+We calculated the value for $\Pr(P_3 = F)$, now we can find the value of $\Pr(P_2 = T \mid P_3 = F)$ via the formula of conditional probabilities:
+
+\[
+    \Pr(P_2 = T \mid P_3 = F) = \frac{\Pr(P_2 = T, P_3 = F)}{\Pr(P_3 = F)} = \frac{0.496}{0.762} = 0.6509
+\]
+
+\bigskip
+\hrulefill
+\bigskip
+
+The value of $\Pr(P_2 = T, P_3 = F)$ is:
+
+\[
+    \begin{aligned}
+        \Pr(P_2 = T, P_3 = F) &= \sum_{p_1} \sum_{p_4} \Pr(P_1 = p_1, P_2 = T, P_3 = F, P_4 = p_4) \\
+        &= \sum_{P_1 \in T,F} \sum_{P_4 \in T,F} \Pr(P_1) \cdot \Pr(p_2 \mid P_1) \cdot \Pr(\neg p_3 \mid p_2) \cdot \Pr(P_4 \mid p_2) \\
+        &= \sum_{P_1 \in T,F} \Pr(P_1) \cdot \Pr(p_2 \mid P_1) \cdot \Pr(\neg p_3 \mid p_2) \cdot \sum_{P_4 \in T,F} \Pr(P_4 \mid p_2) \\
+        &= \sum_{P_1 \in T,F} \Pr(P_1) \cdot \Pr(p_2 \mid P_1) \cdot \Pr(\neg p_3 \mid p_2) \cdot 1 \\
+        &= (0.4 \cdot 0.8 \cdot 0.8) + (0.6 \cdot 0.5 \cdot 0.8) \\
+        &= 0.496
+    \end{aligned}
+\]
+
+\pagebreak
+
+\section{Question 3}
+
+\subsection{Dataset}
+We have following dataset and we are going to reduce dimensions using Principal Component Analysis (PCA):
+
+\bigskip
+
+\begin{tabular}{|c|c|c|c|c|}
+  \hline
+    \textbf{Feature} & \textbf{Sample 1} & \textbf{Sample 2} & \textbf{Sample 3} & \textbf{Sample 4} \\
+  \hline
+    X1 & 4 & 8 & 13 & 7\\
+  \hline
+    X2 & 11 & 4 & 5 & 14 \\
+  \hline
+\end{tabular}
+
+\bigskip
+\bigskip
+
+\subsection{Calculate Covariance Matrix}
+
+In this step, we are going to calculate the covariance matrix for the dataset. The covariance matrix is symmetric and square, with variances on the diagonal and covariances off the diagonal.\\\\
+First we need to calculate the mean value for $X_1$ and $X_2$:
+
+\[
+\begin{cases}
+  \begin{aligned}
+    \text{Mean}_{X1} &= \frac{4 + 8 + 13 + 7}{4} = 8 \\
+    \text{Mean}_{X2} &= \frac{11 + 4 + 5 + 14}{4} = 8.5
+  \end{aligned}
+\end{cases}
+\]
+
+\bigskip
+\bigskip
+
+Then variances of $X_1$ and $X_2$ will be:
+\[
+\begin{cases}
+  \begin{aligned}
+    \text{Var}(X_1) &= \frac{(4 - 8)^2 + (8 - 8)^2 + (13 - 8)^2 + (7 - 8)^2}{3} = 14 \\
+    \text{Var}(X_2) &= \frac{(11 - 8.5)^2 + (4 - 8.5)^2 + (5 - 8.5)^2 + (14 - 8.5)^2}{3} = 23 \\
+    \text{Cov}(X_1, X_2) &= \frac{(4 - 8) \cdot (11 - 8.5) + 0 + (13 - 8) \cdot (5 - 8.5) + (7 - 8) \cdot (14 - 8.5)}{3} = -11
+  \end{aligned}
+\end{cases}
+\]
+
+\bigskip
+\bigskip
+
+The Covariance Matrix is:
+
+\[
+\text{Covariance Matrix} =
+\begin{bmatrix}
+    14 & -11 \\
+    -11 & 23
+\end{bmatrix}
+\]
+
+\pagebreak
+
+\subsection{Calculate Eigenvalues and Eigenvectors}
+From the definition of the eigenvector \(v\) corresponding to the eigenvalue \(\lambda\), we have \(Av = \lambda v\). \\
+Then \(Av - \lambda v = (A - \lambda I)v = 0\). \\
+Equation has a nonzero solution if and only if \(\det(A - \lambda I) = 0\).
+
+\begin{align*}
+\det(A - \lambda I) &= \begin{vmatrix}
+    14 - \lambda & -11 \\
+    -11 & 23 - \lambda
+\end{vmatrix} \\
+&= \lambda^2 - 37\lambda + 201 \\
+&= (\lambda + \frac{\sqrt{565} - 37}{2}) \cdot (\lambda - \frac{\sqrt{565} + 37}{2}) \\
+&= 0
+\end{align*}
+
+Eigenvalues of the Covariance Matrix are: \(\lambda_1 = \frac{-\sqrt{565} + 37}{2} = 6.6151\) and \(\lambda_2 = \frac{\sqrt{565} + 37}{2} = 30.3849\).
+
+Eigen vectors of the Covariance Matrix are:
+\[v_1 = \begin{bmatrix}
+    0.8302\\
+    0.5573
+\end{bmatrix}\]
+
+\[v_2 = \begin{bmatrix}
+    0.5573\\
+    -0.8302
+\end{bmatrix}\]
+
+\bigskip
+\bigskip
+
+\subsection{Sort eigenvalues and their corresponding eigenvectors}
+In this case we have only 2 eigenvalues and eigenvectors, so the only thing we need to do is to choose the bigger eigenvalue and its corresponding eigenvalue($\lambda_2, v_2$).
+
+\pagebreak
+
+\subsection{Reduce Dimension}
+Now, we need to calculate the product of original data matrix with $v_2$:
+
+\[
+\begin{bmatrix}
+    4 & 8 & 13 & 7 \\
+    11 & 4 & 5 & 14 \\
+\end{bmatrix}^T
+\begin{bmatrix}
+    0.5573\\
+    -0.8302\\
+\end{bmatrix}
+=
+\begin{bmatrix}
+    -6.903 & 1.1376 & 3.0939 & -7.7217
+\end{bmatrix}
+\]
+
+\bigskip
+\bigskip
+
+\subsection{Original and Reduced Data}
+\[
+\text{Original Data} =
+\begin{bmatrix}
+    4 & 8 & 13 & 7 \\
+    11 & 4 & 5 & 14 \\
+\end{bmatrix}
+\]
+
+
+\[
+\text{Reduced Data} =
+\begin{bmatrix}
+    -6.903 & 1.1376 & 3.0939 & -7.7217
+\end{bmatrix}
+\]
+
+
+\end{document} 
